@@ -1,4 +1,4 @@
-package com.sirfeeky.model;
+package com.sirfeeky.dream_shops.model;
 
 import java.sql.Blob;
 

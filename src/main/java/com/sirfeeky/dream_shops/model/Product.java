@@ -1,4 +1,4 @@
-package com.sirfeeky.model;
+package com.sirfeeky.dream_shops.model;
 
 import java.math.BigDecimal;
 import java.util.List;
