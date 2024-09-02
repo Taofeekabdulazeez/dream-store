@@ -8,5 +8,7 @@ import com.sirfeeky.dream_shops.model.Category;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     Category findByName(String name);
+
+    boolean existByName(String name);
     
 }
