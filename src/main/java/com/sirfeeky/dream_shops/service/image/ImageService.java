@@ -15,7 +15,6 @@ import com.sirfeeky.dream_shops.exceptions.ResourceNotFoundException;
 import com.sirfeeky.dream_shops.model.Image;
 import com.sirfeeky.dream_shops.model.Product;
 import com.sirfeeky.dream_shops.repository.ImageRepository;
-import com.sirfeeky.dream_shops.repository.ProductRepository;
 import com.sirfeeky.dream_shops.service.product.ProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -42,7 +41,7 @@ public class ImageService implements IImageService {
     }
 
     @Override
-    public List<ImageDto> saveImage(List<MultipartFile> files, Long productId) {
+    public List<ImageDto> saveImages(List<MultipartFile> files, Long productId) {
         Product product = productService.getProductById(productId);
 
         List<ImageDto> savedImageDto = new ArrayList<>();
