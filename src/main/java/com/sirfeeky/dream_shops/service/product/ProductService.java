@@ -5,13 +5,18 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.sirfeeky.dream_shops.exceptions.ProductNotFoundException;
+import com.sirfeeky.dream_shops.dto.ImageDto;
+import com.sirfeeky.dream_shops.dto.ProductDto;
+import com.sirfeeky.dream_shops.exceptions.ResourceNotFoundException;
 import com.sirfeeky.dream_shops.model.Category;
+import com.sirfeeky.dream_shops.model.Image;
 import com.sirfeeky.dream_shops.model.Product;
 import com.sirfeeky.dream_shops.repository.CategoryRepository;
+import com.sirfeeky.dream_shops.repository.ImageRepository;
 import com.sirfeeky.dream_shops.repository.ProductRepository;
 import com.sirfeeky.dream_shops.request.AddProductRequest;
 import com.sirfeeky.dream_shops.request.UpdateProductRequest;
+// import org.modelmapper.ModelMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +26,8 @@ public class ProductService implements IProductService {
     
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ImageRepository imageRepository;
+
 
     @Override
     public Product addProduct(AddProductRequest request) {
@@ -57,14 +64,14 @@ public class ProductService implements IProductService {
     @Override
     public Product getProductById(Long id) {
         return this.productRepository.findById(id)
-         .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+         .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
 
     @Override
     public void deleteProductById(Long id) {
        this.productRepository.findById(id).ifPresentOrElse(this.productRepository::delete, 
                () -> {
-                   throw new ProductNotFoundException("Product not found");
+                   throw new ResourceNotFoundException("Product not found");
                 });
     }
 
@@ -73,7 +80,7 @@ public class ProductService implements IProductService {
        return this.productRepository.findById(productId)
            .map(existingProduct -> updateExistingProduct(existingProduct, request))
            .map(productRepository :: save)
-               .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+               .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
     }
 
     private Product updateExistingProduct(Product existingProduct, UpdateProductRequest request){
@@ -123,6 +130,22 @@ public class ProductService implements IProductService {
     @Override
     public Long countProductsByBrandAndName(String brand, String name) {
         return this.productRepository.countByBrandAndName(brand, name);
+    }
+
+     @Override
+    public List<ProductDto> getConvertedProducts(List<Product> products) {
+      return products.stream().map(this::convertToDto).toList();
+    }
+
+    @Override
+    public ProductDto convertToDto(Product product) {
+        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        List<Image> images = imageRepository.findByProductId(product.getId());
+        List<ImageDto> imageDtos = images.stream()
+                .map(image -> modelMapper.map(image, ImageDto.class))
+                .toList();
+        productDto.setImages(imageDtos);
+        return productDto;
     }
     
 }

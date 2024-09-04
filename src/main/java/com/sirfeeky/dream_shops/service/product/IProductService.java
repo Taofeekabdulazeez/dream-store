@@ -2,6 +2,7 @@ package com.sirfeeky.dream_shops.service.product;
 
 import java.util.List;
 
+import com.sirfeeky.dream_shops.dto.ProductDto;
 import com.sirfeeky.dream_shops.model.Product;
 import com.sirfeeky.dream_shops.request.AddProductRequest;
 import com.sirfeeky.dream_shops.request.UpdateProductRequest;
@@ -30,4 +31,7 @@ public interface IProductService {
 
     Long countProductsByBrandAndName(String brand, String name);
 
+    List<ProductDto> getConvertedProducts(List<Product> products);
+
+    ProductDto convertToDto(Product product);
 } 

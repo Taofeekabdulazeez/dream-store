@@ -86,7 +86,7 @@ public class ImageService implements IImageService {
             image.setFileName(file.getOriginalFilename());
             image.setFileType(file.getContentType());
             image.setImage(new SerialBlob(file.getBytes()));
-        
+
         } catch (IOException | SQLException exception) {
             throw new RuntimeException(exception.getMessage());
         }
