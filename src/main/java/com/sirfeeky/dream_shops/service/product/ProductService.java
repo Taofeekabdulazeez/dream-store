@@ -3,6 +3,7 @@ package com.sirfeeky.dream_shops.service.product;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.sirfeeky.dream_shops.dto.ImageDto;
@@ -27,6 +28,7 @@ public class ProductService implements IProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ImageRepository imageRepository;
+    private final ModelMapper modelMapper;
 
 
     @Override
